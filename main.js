@@ -5,12 +5,12 @@ var width = 30;
 var height = 30;
 var dy = 10;
 
-function random(x, y){
-	x = Math.floor(Math.random() * x);
-	y = Math.floor(Math.random() * y);
-
-	return x, y;
-}
+// function random(x, y){
+// 	x = Math.floor(Math.random() * x);
+// 	y = Math.floor(Math.random() * y);
+//
+// 	return x, y;
+// }
 
 // Creating player object
 var player = {
@@ -24,32 +24,21 @@ var player = {
 	}
 }
 
-// Creating Enemies
+// Creating player object
+var enemies = {
+	x : Math.random() * window.innerWidth,
+	y : 0,
+	yVelocity : 3,
+	width: width,
+	height: height,
+	draw: function(){
+		fill(0,255,0);
+		ellipse(this.x, this.y, this.width, this.height);
+	},
 
-var enemies = new Array();
-
-function Enemies(I){
-	I.activate = true;
-	I.x = Math.random() + window.innerWidth;
-	I.y = 0;
-	I.height= 5;
-	I.Width = 3;
-	I.yVelocity=10;
-	I.inBound = () => {
-		return I.y >=0 && I.y <= window.innerHeight - I.height;
+	update: function(){
+		this.y += this.yVelocity;
 	}
-	I.draw = () => {
-		fill(255, 0, 0);
-		ellipse(I.x, I.y, I.Width, I.height);
-	}
-	I.update = function (){
-		I.activate = I.activate && I.inBound;
-		I.y += I.yVelocity;
-	}
-
-		console.log(I.y);
-
-	return I;
 }
 
 // Bullets array
@@ -57,7 +46,7 @@ var shoot = new Array();
 
 // Bullet object
 function Shoot(I){
-	I.activate = true;
+	I.active = true;
 	I.x = player.x + player.width / 2;
 	I.y = player.y + player.height / 2;
 	I.height= 5;
@@ -74,8 +63,6 @@ function Shoot(I){
 		I.activate = I.activate && I.inBound;
 		I.y -= I.yVelocity;
 	}
-
-		console.log(I.y);
 
 	return I;
 }
@@ -121,13 +108,7 @@ function draw(){
 		shoot.draw();
 	});
 
-	enemies=enemies.filter((enemies)=>{
-		return enemies.activate();
-	});
-
-	enemies.forEach((enemies)=>{
-		enemies.update();
-		enemies.draw();
-	});
+	enemies.draw();
+	enemies.update();
 
 }
